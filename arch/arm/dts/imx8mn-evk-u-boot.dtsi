@@ -97,8 +97,9 @@
 					load = <0x960000>;
 					entry = <0x960000>;
 
-					atf_blob: blob-ext {
+					atf-bl31 {
 						filename = "bl31.bin";
+						missing-msg = "atf-bl31";
 					};
 				};
 
