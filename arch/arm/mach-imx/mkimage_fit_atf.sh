@@ -53,7 +53,7 @@ cat << __HEADER_EOF
 	description = "Configuration to load ATF before U-Boot";
 
 	images {
-		uboot@1 {
+		uboot {
 			description = "U-Boot (64-bit)";
 			os = "u-boot";
 			data = /incbin/("$BL33");
@@ -68,7 +68,7 @@ cnt=1
 for dtname in $*
 do
 	cat << __FDT_IMAGE_EOF
-		fdt@$cnt {
+		fdt$cnt {
 			description = "$(basename $dtname .dtb)";
 			data = /incbin/("$dtname");
 			type = "flat_dt";
@@ -79,7 +79,7 @@ cnt=$((cnt+1))
 done
 
 cat << __HEADER_EOF
-		atf@1 {
+		atf {
 			description = "ARM Trusted Firmware";
 			os = "arm-trusted-firmware";
 			data = /incbin/("$BL31");
@@ -93,7 +93,7 @@ __HEADER_EOF
 
 if [ -f $BL32 ]; then
 cat << __HEADER_EOF
-		tee@1 {
+		tee {
 			description = "TEE firmware";
 			data = /incbin/("$BL32");
 			type = "firmware";
@@ -108,7 +108,7 @@ fi
 cat << __CONF_HEADER_EOF
 	};
 	configurations {
-		default = "config@1";
+		default = "config1";
 
 __CONF_HEADER_EOF
 
@@ -117,20 +117,20 @@ for dtname in $*
 do
 if [ -f $BL32 ]; then
 cat << __CONF_SECTION_EOF
-		config@$cnt {
+		config$cnt {
 			description = "$(basename $dtname .dtb)";
-			firmware = "uboot@1";
-			loadables = "atf@1", "tee@1";
-			fdt = "fdt@$cnt";
+			firmware = "uboot";
+			loadables = "atf", "tee";
+			fdt = "fdt$cnt";
 		};
 __CONF_SECTION_EOF
 else
 cat << __CONF_SECTION1_EOF
-		config@$cnt {
+		config$cnt {
 			description = "$(basename $dtname .dtb)";
-			firmware = "uboot@1";
-			loadables = "atf@1";
-			fdt = "fdt@$cnt";
+			firmware = "uboot";
+			loadables = "atf";
+			fdt = "fdt$cnt";
 		};
 __CONF_SECTION1_EOF
 fi
