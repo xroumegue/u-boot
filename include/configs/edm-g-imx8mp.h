@@ -14,6 +14,7 @@
 
 #include "imx_env.h"
 
+#define CONFIG_SYS_BOOTM_LEN SZ_64M
 
 #define CONFIG_SPL_MAX_SIZE		(152 * 1024)
 #define CONFIG_SYS_MONITOR_LEN		(512 * 1024)
