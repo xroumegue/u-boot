@@ -43,18 +43,6 @@
 		regulator-always-on;
 	};
 
-	enet_power_en: enet_power_en {
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_enet_pwr>;
-		compatible = "regulator-fixed";
-		regulator-name = "enet_pwr";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpio1 11 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		regulator-always-on;
-	};
-
 	reg_pcie0: regulator-pcie {
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
@@ -128,8 +116,6 @@
 	pinctrl-0 = <&pinctrl_eqos>;
 	phy-mode = "rgmii-id";
 	phy-handle = <&ethphy0>;
-	phy-supply = <&enet_power_en>;
-	phy-reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
 	status = "okay";
 
 	mdio {
@@ -140,10 +126,9 @@
 		ethphy0: ethernet-phy@1 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <1>;
-			reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
-			reset-assert-us = <10000>;
-			reset-deassert-us = <80000>;
-			realtek,clkout-disable;
+			at803x,eee-disabled;
+			at803x,vddio-1p8v;
+			interrupts-extended = <&gpio1 12 IRQ_TYPE_LEVEL_LOW>;
 		};
 	};
 
@@ -452,7 +437,7 @@
 	pinctrl_eqos: eqosgrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC	0x3
-			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO	0x23
+			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO	0x3
 			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0	0x91
 			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1	0x91
 			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2	0x91
@@ -670,12 +655,6 @@
 	pinctrl_wdog: wdoggrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B	0xc6
-		>;
-	};
-
-	pinctrl_enet_pwr: enetpwrgrp {
-		fsl,pins = <
-			MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11		0x11
 		>;
 	};
 
