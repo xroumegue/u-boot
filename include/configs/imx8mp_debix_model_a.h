@@ -32,6 +32,7 @@
 	"image=Image\0" \
 	"console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200\0" \
 	"fdt_addr_r=0x43000000\0"			\
+	"fdtoverlay_addr_r=0x43f00000\0" \
 	"boot_fdt=try\0" \
 	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0" \
 	"initrd_addr=0x43800000\0"		\
