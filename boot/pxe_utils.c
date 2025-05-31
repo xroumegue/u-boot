@@ -528,7 +528,7 @@ static int label_boot(struct pxe_context *ctx, struct pxe_label *label)
 	}
 
 	if (label->ipappend & 0x1) {
-		sprintf(ip_str, " ip=%s:%s:%s:%s",
+		sprintf(ip_str, " ip=%s:%s:%s:%s:::off",
 			env_get("ipaddr"), env_get("serverip"),
 			env_get("gatewayip"), env_get("netmask"));
 	}
